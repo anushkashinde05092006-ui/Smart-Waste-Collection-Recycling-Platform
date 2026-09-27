@@ -1,0 +1,343 @@
+{
+  "requests": [
+    {
+      "id": "SW-2026-00006",
+      "user_id": "USR-1008",
+      "user_name": "Priya Updated Name",
+      "user_email": "priya.test@example.com",
+      "user_phone": "+919999999999",
+      "category_id": "plastic",
+      "category_name": "Recyclable Plastics",
+      "estimated_weight_kg": 5.0,
+      "quantity_description": "5.0 kg items",
+      "address": "Kothrud, Pune",
+      "landmark": "",
+      "lat": 18.559,
+      "lng": 73.786,
+      "pickup_date": "2026-10-01",
+      "time_slot": "09:00 AM - 12:00 PM",
+      "status": "Submitted",
+      "collector_id": null,
+      "collector_assigned": "Unassigned",
+      "created_at": "2026-09-27T16:10:12.300895",
+      "eco_points": 75,
+      "co2_saved_kg": 9.0,
+      "notes": "",
+      "photo_url": ""
+    },
+    {
+      "id": "SW-2026-00005",
+      "user_id": "USR-1001",
+      "user_name": "Anushka Shinde",
+      "user_email": "anushka@example.com",
+      "user_phone": "+917045782996",
+      "category_id": "e_waste",
+      "category_name": "E-Waste & Electronics",
+      "estimated_weight_kg": 3.5,
+      "quantity_description": "3.5 kg items",
+      "address": "Baner Road, Pune",
+      "landmark": "",
+      "lat": 18.559,
+      "lng": 73.786,
+      "pickup_date": "2026-09-30",
+      "time_slot": "09:00 AM - 12:00 PM",
+      "status": "Recycling Completed",
+      "collector_id": null,
+      "collector_assigned": "Ramesh V. (Collector Alpha)",
+      "created_at": "2026-09-27T15:50:07.048151",
+      "eco_points": 140,
+      "co2_saved_kg": 15.75,
+      "notes": "",
+      "photo_url": ""
+    },
+    {
+      "id": "REQ-2026-8801",
+      "user_name": "Anushka Shinde",
+      "user_email": "anushka@example.com",
+      "user_phone": "+917045782996",
+      "category_id": "e_waste",
+      "category_name": "E-Waste & Electronics",
+      "estimated_weight_kg": 4.5,
+      "quantity_description": "1 old laptop, 2 smartphones, assorted cables",
+      "address": "Sector 125, Noida, Uttar Pradesh, 201303",
+      "landmark": "Near Eco Tower",
+      "lat": 28.544,
+      "lng": 77.333,
+      "pickup_date": "2026-09-29",
+      "time_slot": "10:00 AM - 01:00 PM",
+      "status": "En Route",
+      "collector_assigned": "GreenCollector Team Alpha (Ramesh V.)",
+      "created_at": "2026-09-27T10:15:00",
+      "eco_points": 180,
+      "co2_saved_kg": 20.25,
+      "notes": "Please call before arrival."
+    },
+    {
+      "id": "REQ-2026-8802",
+      "user_name": "Rohan Deshmukh",
+      "user_email": "rohan.d@example.com",
+      "user_phone": "+919876543210",
+      "category_id": "plastic",
+      "category_name": "Recyclable Plastics",
+      "estimated_weight_kg": 12.0,
+      "quantity_description": "3 bags of plastic bottles and containers",
+      "address": "Wework Galaxy, Residency Rd, Ashok Nagar, Bengaluru",
+      "landmark": "Opposite Metro Station",
+      "lat": 12.971,
+      "lng": 77.594,
+      "pickup_date": "2026-09-28",
+      "time_slot": "02:00 PM - 05:00 PM",
+      "status": "Scheduled",
+      "collector_assigned": "EcoExpress Unit 4",
+      "created_at": "2026-09-26T14:30:00",
+      "eco_points": 180,
+      "co2_saved_kg": 21.6,
+      "notes": "Gate entry code #402"
+    },
+    {
+      "id": "REQ-2026-8803",
+      "user_name": "Priya Sharma",
+      "user_email": "priya.s@example.com",
+      "user_phone": "+919811223344",
+      "category_id": "paper",
+      "category_name": "Paper & Cardboard",
+      "estimated_weight_kg": 25.0,
+      "quantity_description": "Office cardboards and stacks of newspapers",
+      "address": "Baner Road, Pune, Maharashtra 411045",
+      "landmark": "Behind FIT Campus",
+      "lat": 18.559,
+      "lng": 73.786,
+      "pickup_date": "2026-09-26",
+      "time_slot": "09:00 AM - 12:00 PM",
+      "status": "Recycled",
+      "collector_assigned": "Pune Recycling Hub",
+      "created_at": "2026-09-25T09:00:00",
+      "eco_points": 250,
+      "co2_saved_kg": 30.0,
+      "notes": "Recycled successfully at Pune Waste Facility."
+    },
+    {
+      "id": "REQ-2026-8804",
+      "user_name": "Vikram Mehta",
+      "user_email": "vikram.m@example.com",
+      "user_phone": "+919988776655",
+      "category_id": "hazardous",
+      "category_name": "Hazardous & Chemicals",
+      "estimated_weight_kg": 3.0,
+      "quantity_description": "Used paint cans and battery acid bottles",
+      "address": "Koregaon Park, Pune, Maharashtra 411001",
+      "landmark": "Near Lane 6",
+      "lat": 18.536,
+      "lng": 73.893,
+      "pickup_date": "2026-09-30",
+      "time_slot": "02:00 PM - 05:00 PM",
+      "status": "Pending",
+      "collector_assigned": "Unassigned",
+      "created_at": "2026-09-27T12:00:00",
+      "eco_points": 90,
+      "co2_saved_kg": 7.5,
+      "notes": "Hazardous items require specialized handling."
+    }
+  ],
+  "categories": [
+    {
+      "id": "plastic",
+      "name": "Recyclable Plastics",
+      "icon": "fa-bottle-water",
+      "color": "#10B981",
+      "bg_color": "rgba(16, 185, 129, 0.1)",
+      "points_per_kg": 15,
+      "co2_saved_per_kg": 1.8,
+      "description": "PET bottles, HDPE containers, plastic packaging & clean food containers.",
+      "tips": "Rinse containers before pickup. Separate caps and compress bottles to save space."
+    },
+    {
+      "id": "e_waste",
+      "name": "E-Waste & Electronics",
+      "icon": "fa-microchip",
+      "color": "#8B5CF6",
+      "bg_color": "rgba(139, 92, 246, 0.1)",
+      "points_per_kg": 40,
+      "co2_saved_per_kg": 4.5,
+      "description": "Old laptops, phones, cables, circuit boards, batteries & home appliances.",
+      "tips": "Wipe personal data before disposal. Wrap batteries safely in non-conductive tape."
+    },
+    {
+      "id": "organic",
+      "name": "Organic & Wet Waste",
+      "icon": "fa-seedling",
+      "color": "#84CC16",
+      "bg_color": "rgba(132, 204, 22, 0.1)",
+      "points_per_kg": 5,
+      "co2_saved_per_kg": 0.8,
+      "description": "Food scraps, kitchen waste, garden waste & biodegradable material.",
+      "tips": "Drain liquid before packing in compostable bags. Keep separate from dry waste."
+    },
+    {
+      "id": "paper",
+      "name": "Paper & Cardboard",
+      "icon": "fa-newspaper",
+      "color": "#F59E0B",
+      "bg_color": "rgba(245, 158, 11, 0.1)",
+      "points_per_kg": 10,
+      "co2_saved_per_kg": 1.2,
+      "description": "Newspapers, cardboard boxes, office paper, magazines & egg cartons.",
+      "tips": "Flatten boxes and bundle papers tightly. Keep dry and free from oil or grease."
+    },
+    {
+      "id": "glass",
+      "name": "Glass Containers",
+      "icon": "fa-wine-bottle",
+      "color": "#06B6D4",
+      "bg_color": "rgba(6, 182, 212, 0.1)",
+      "points_per_kg": 12,
+      "co2_saved_per_kg": 1.0,
+      "description": "Glass bottles, jars, glass food containers & intact glassware.",
+      "tips": "Rinse clean. Do not include broken window glass or mirrors in standard recycling."
+    },
+    {
+      "id": "metal",
+      "name": "Metal Cans & Scrap",
+      "icon": "fa-cubes",
+      "color": "#64748B",
+      "bg_color": "rgba(100, 116, 139, 0.1)",
+      "points_per_kg": 25,
+      "co2_saved_per_kg": 3.2,
+      "description": "Aluminum soda cans, tin food cans, metal scrap & aluminum foil.",
+      "tips": "Rinse beverage cans and flatten if possible. Remove food residues."
+    },
+    {
+      "id": "hazardous",
+      "name": "Hazardous & Chemicals",
+      "icon": "fa-triangle-exclamation",
+      "color": "#EF4444",
+      "bg_color": "rgba(239, 68, 68, 0.1)",
+      "points_per_kg": 30,
+      "co2_saved_per_kg": 2.5,
+      "description": "Paints, harsh household cleaning chemicals, medical waste, fluorescent bulbs.",
+      "tips": "Keep in original labeled containers. Store securely away from heat and moisture."
+    },
+    {
+      "id": "bulk",
+      "name": "Bulk & Furniture",
+      "icon": "fa-couch",
+      "color": "#EC4899",
+      "bg_color": "rgba(236, 72, 153, 0.1)",
+      "points_per_kg": 8,
+      "co2_saved_per_kg": 0.9,
+      "description": "Old wooden furniture, mattresses, bulky items & large plastic items.",
+      "tips": "Disassemble bulky items if possible. Ensure clear access for collection vehicle."
+    }
+  ],
+  "users": [
+    {
+      "id": "USR-1001",
+      "name": "Anushka Shinde",
+      "email": "anushka@example.com",
+      "phone": "+917045782996",
+      "password_hash": "scrypt:32768:8:1$eRYhKeHy3tlVWZq0$5de6b0c78509b5fbeb4442586371ffbd1d42166097d73e205a59100087d499123defa913c78ade3fd415ce6c1304e2c10c35545f71ce73e4ddd1f06f6dfef255",
+      "role": "user",
+      "eco_points": 700,
+      "level": 3,
+      "badges": [
+        "Eco Pioneer",
+        "Plastic Crusher",
+        "E-Waste Warrior"
+      ],
+      "created_at": "2026-09-01T09:00:00"
+    },
+    {
+      "id": "USR-1002",
+      "name": "Ramesh V. (Collector Alpha)",
+      "email": "collector@ecoloop.com",
+      "phone": "+919876543210",
+      "password_hash": "scrypt:32768:8:1$0CDBWVitF9lpTMqz$cd70e0aa315d6e8761afebbeb069929150539f63a79b4513eabf71f3ff2f78fea1c3cb4d98d560602e6b522cbcb845539a2ea10de2162a67da83ec4a9c018473",
+      "role": "collector",
+      "eco_points": 1200,
+      "level": 4,
+      "badges": [
+        "Master Collector",
+        "Fast Responder"
+      ],
+      "created_at": "2026-09-01T09:00:00"
+    },
+    {
+      "id": "USR-1003",
+      "name": "System Admin",
+      "email": "admin@ecoloop.com",
+      "phone": "+919870330830",
+      "password_hash": "scrypt:32768:8:1$1FWxsr5KkhIsnUSR$cdcab4251eb5f10614654023f1208aaac25b2568a23ba3ba161929ff2a0db8ec73629199d75379f98262330c6a52f778cf2d11ce88996d6966e8addb68f19ca3",
+      "role": "admin",
+      "eco_points": 5000,
+      "level": 5,
+      "badges": [
+        "Planet Guardian",
+        "Super Admin"
+      ],
+      "created_at": "2026-09-01T09:00:00"
+    },
+    {
+      "id": "USR-1008",
+      "name": "Priya Updated Name",
+      "email": "priya.test@example.com",
+      "phone": "+919999999999",
+      "password_hash": "scrypt:32768:8:1$HKivKDr4XknHdePM$855383c291e3b01ff62503cac9f4926dbe15659fefb2c5be2b43b7fd15f3143344d38e223fe8e2e1b548c541d1e01c96b5086c30677ceaddd2d741967bf6e860",
+      "role": "user",
+      "eco_points": 125,
+      "level": 1,
+      "badges": [
+        "Eco Pioneer"
+      ],
+      "created_at": "2026-09-27T16:10:12.282799"
+    }
+  ],
+  "reports": [
+    {
+      "id": "REP-2026-005",
+      "user_name": "Anushka Shinde",
+      "problem_type": "Illegal Dumping",
+      "location": "Pune Highway",
+      "description": "Debris dumped",
+      "status": "Under Review",
+      "created_at": "2026-09-27T15:50:07.078805"
+    },
+    {
+      "id": "REP-2026-001",
+      "user_name": "Anushka Shinde",
+      "problem_type": "Illegal Dumping",
+      "location": "Baner Highway Underpass, Pune",
+      "description": "Construction debris and plastic bags dumped near water canal.",
+      "status": "Under Review",
+      "created_at": "2026-09-26T11:00:00"
+    },
+    {
+      "id": "REP-2026-002",
+      "user_name": "Rohan Deshmukh",
+      "problem_type": "Overflowing Bins",
+      "location": "Sector 125 Main Market, Noida",
+      "description": "Public recycling bin is overflowing and spilling onto pavement.",
+      "status": "Resolved",
+      "created_at": "2026-09-25T16:20:00"
+    }
+  ],
+  "challenges": [
+    {
+      "id": "CHALL-001",
+      "title": "Pune Green Sector Drive 2026",
+      "target_kg": 1000,
+      "current_kg": 680,
+      "participants": 142,
+      "days_left": 12,
+      "reward_badge": "Sector Eco Champion"
+    },
+    {
+      "id": "CHALL-002",
+      "title": "Noida Zero E-Waste Month",
+      "target_kg": 500,
+      "current_kg": 340,
+      "participants": 89,
+      "days_left": 5,
+      "reward_badge": "E-Waste Pioneer"
+    }
+  ]
+}

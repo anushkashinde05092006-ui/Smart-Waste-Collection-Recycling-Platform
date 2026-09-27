@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoLoop | Smart Waste Collection & Recycling Platform - FIT-FEST 2026</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Leaflet OpenStreetMap CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Top Navigation Bar -->
+    <header class="container">
+        <nav class="navbar glass-panel mt-3">
+            <div class="navbar-inner">
+                <a href="/" class="brand">
+                    <div class="brand-icon">
+                        <i class="fa-solid fa-recycle"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h1>EcoLoop <span>FIT-FEST 2026</span></h1>
+                    </div>
+                </a>
+
+                <!-- Nav Tabs -->
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-tab="pickup-tab">
+                        <i class="fa-solid fa-house"></i> Home
+                    </button>
+                    <button class="nav-tab" data-tab="pickup-tab">
+                        <i class="fa-solid fa-truck-ramp-box"></i> Request Pickup
+                    </button>
+                    <button class="nav-tab auth-only" data-tab="my-requests-tab" style="display: none;">
+                        <i class="fa-solid fa-list-check"></i> My Requests
+                    </button>
+                    <button class="nav-tab auth-only" data-tab="dashboard-tab" style="display: none;">
+                        <i class="fa-solid fa-chart-line"></i> Dashboard
+                    </button>
+                    <button class="nav-tab auth-only" data-tab="profile-tab" style="display: none;">
+                        <i class="fa-solid fa-id-card"></i> Profile
+                    </button>
+                    <button class="nav-tab" data-tab="collector-tab" style="display: none;">
+                        <i class="fa-solid fa-clipboard-list"></i> Collector Portal
+                    </button>
+                    <button class="nav-tab" data-tab="admin-tab" style="display: none;">
+                        <i class="fa-solid fa-chart-pie"></i> Admin Portal
+                    </button>
+                    <button class="nav-tab" data-tab="guide-tab">
+                        <i class="fa-solid fa-book-bookmark"></i> Disposal Guide
+                    </button>
+                    <button class="nav-tab" data-tab="report-tab">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Report Problem
+                    </button>
+                </div>
+
+                <!-- User Profile / Auth Action Buttons -->
+                <div class="flex items-center gap-3">
+                    <div id="logged-out-actions" class="flex items-center gap-2">
+                        <button onclick="showModal('auth-modal')" class="btn-primary text-xs">
+                            <i class="fa-solid fa-right-to-bracket"></i> Login
+                        </button>
+                        <button onclick="showModal('reg-modal')" class="btn-outline text-xs">
+                            <i class="fa-solid fa-user-plus"></i> Register
+                        </button>
+                    </div>
+
+                    <div id="user-profile-display" class="flex items-center gap-3 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800" style="display: none;">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="text-left text-xs">
+                            <div class="font-bold text-white flex items-center gap-2">
+                                <span id="user-name-label">User</span>
+                                <span id="user-role-badge" class="bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded text-[10px]">USER</span>
+                            </div>
+                            <div class="text-slate-400 font-semibold" id="user-pts-label">700 pts</div>
+                        </div>
+                        <button onclick="handleLogout()" class="text-slate-400 hover:text-red-400 text-xs ml-1 font-bold flex items-center gap-1" title="Logout">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+
+        <!-- Hero Section with Real-Time Impact Counters -->
+        <section class="glass-panel hero-section">
+            <div class="hero-content">
+                <div>
+                    <div class="hero-badge">
+                        <i class="fa-solid fa-seedling"></i> FIT-FEST 2026 Official Hackathon Challenge
+                    </div>
+                    <h2 class="hero-title">
+                        Smart Waste Collection & <span>Recycling Platform</span>
+                    </h2>
+                    <p class="hero-desc">
+                        Request doorstep collection, track pickup status in real-time (`SW-2026-XXXXX`), earn Eco-Points, and view user dashboard analytics.
+                    </p>
+                    
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="showModal('assistant-modal')" class="btn-outline text-xs bg-emerald-500/10 border-emerald-500/30 text-emerald-300">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Smart Waste Assistant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Dashboard Grid -->
+                <div class="stat-grid">
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon bg-emerald-500/20 text-emerald-400">
+                            <i class="fa-solid fa-weight-hanging"></i>
+                        </div>
+                        <div>
+                            <div class="stat-val" id="stat-weight">44.5 kg</div>
+                            <div class="stat-lbl">Total Waste Recycled</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon bg-cyan-500/20 text-cyan-400">
+                            <i class="fa-solid fa-cloud-sun"></i>
+                        </div>
+                        <div>
+                            <div class="stat-val" id="stat-co2">79.4 kg</div>
+                            <div class="stat-lbl">CO₂ Offset Saved</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon bg-amber-500/20 text-amber-400">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <div>
+                            <div class="stat-val" id="stat-points">700 pts</div>
+                            <div class="stat-lbl">Eco Points Earned</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon bg-purple-500/20 text-purple-400">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <div>
+                            <div class="stat-val" id="stat-active">3</div>
+                            <div class="stat-lbl">Active Pickups</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: USER DASHBOARD -->
+        <section id="dashboard-tab" class="tab-content hidden">
+            <div class="glass-panel p-6 mb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white mb-1">
+                            Welcome, <span id="dash-welcome-name" class="text-emerald-400">User</span>! 👋
+                        </h2>
+                        <p class="text-xs text-slate-400">Here is your personal waste collection activity and eco impact summary.</p>
+                    </div>
+                    <span id="dash-user-level-badge" class="bg-emerald-500/20 text-emerald-300 font-bold px-3 py-1.5 rounded-full text-xs border border-emerald-500/30">
+                        Level 3 Eco Pioneer
+                    </span>
+                </div>
+            </div>
+
+            <!-- Dashboard Metric Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-6">
+                <div class="glass-panel p-5 text-left">
+                    <div class="text-xs text-slate-400 font-semibold mb-1">Total Pickup Requests</div>
+                    <div class="text-3xl font-extrabold text-white" id="dash-total-reqs">3</div>
+                </div>
+                <div class="glass-panel p-5 text-left">
+                    <div class="text-xs text-slate-400 font-semibold mb-1">Pending Requests</div>
+                    <div class="text-3xl font-extrabold text-amber-400" id="dash-pending-reqs">2</div>
+                </div>
+                <div class="glass-panel p-5 text-left">
+                    <div class="text-xs text-slate-400 font-semibold mb-1">Completed Requests</div>
+                    <div class="text-3xl font-extrabold text-emerald-400" id="dash-completed-reqs">1</div>
+                </div>
+                <div class="glass-panel p-5 text-left">
+                    <div class="text-xs text-slate-400 font-semibold mb-1">Eco Points</div>
+                    <div class="text-3xl font-extrabold text-cyan-400" id="dash-eco-points">700</div>
+                </div>
+            </div>
+
+            <!-- Recent Requests Table -->
+            <div class="glass-panel p-6">
+                <h3 class="text-lg font-bold text-white mb-4">Your Recent Pickup Activity</h3>
+                <div id="dash-requests-list">
+                    <!-- Populated by app.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: USER PROFILE -->
+        <section id="profile-tab" class="tab-content hidden">
+            <div class="glass-panel p-6 max-w-2xl mx-auto">
+                <div class="flex items-center gap-4 mb-6 pb-4 border-b border-slate-800">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl font-bold border border-emerald-500/30">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white" id="profile-display-name">Anushka Shinde</h2>
+                        <p class="text-xs text-slate-400"><i class="fa-solid fa-envelope text-emerald-400"></i> <span id="profile-display-email">anushka@example.com</span></p>
+                        <span id="profile-display-role" class="bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded text-[10px] uppercase">USER</span>
+                    </div>
+                </div>
+
+                <form id="profile-update-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" id="profile-input-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" id="profile-input-phone" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs">
+                        <div>
+                            <span class="text-slate-400 font-semibold block">Eco Points Balance:</span>
+                            <span id="profile-display-points" class="text-lg font-extrabold text-amber-400">700 pts</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 font-semibold block">Account Created Date:</span>
+                            <span id="profile-display-date" class="text-sm font-bold text-white">2026-09-01</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary w-full py-3 justify-center">
+                        <i class="fa-solid fa-floppy-disk"></i> Update Profile Information
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB: MY REQUESTS -->
+        <section id="my-requests-tab" class="tab-content hidden">
+            <div class="glass-panel p-6 mb-6">
+                <h2 class="text-2xl font-bold text-white mb-1"><i class="fa-solid fa-list-check text-emerald-400"></i> My Pickup Requests</h2>
+                <p class="text-xs text-slate-400">Displaying requests linked specifically to your logged-in account.</p>
+            </div>
+
+            <div id="my-requests-container">
+                <!-- Populated by app.js -->
+            </div>
+        </section>
+
+        <!-- TAB 1: REQUEST PICKUP FORM -->
+        <section id="pickup-tab" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-panel p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">1. Select Waste Category</h3>
+                                <p class="text-xs text-slate-400">Choose waste type to calculate eco-points & CO₂ avoidance</p>
+                            </div>
+                            <button type="button" onclick="showModal('assistant-modal')" class="text-xs text-emerald-400 hover:underline flex items-center gap-1 font-bold">
+                                <i class="fa-solid fa-robot"></i> Need Help Choosing?
+                            </button>
+                        </div>
+
+                        <div id="category-grid" class="category-grid">
+                            <!-- Dynamic category cards -->
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">2. Schedule Pickup & Location</h3>
+                                <p class="text-xs text-slate-400">Specify weight, pickup date, time slot & address pin</p>
+                            </div>
+                        </div>
+
+                        <form id="pickup-form">
+                            <div id="category-tip"></div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" id="form-name" class="form-control" placeholder="Anushka Shinde" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Contact Phone</label>
+                                    <input type="tel" id="form-phone" class="form-control" placeholder="+917045782996" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group bg-slate-900/60 p-4 rounded-xl border border-slate-800 my-3">
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="form-label mb-0">Estimated Waste Weight</label>
+                                    <span id="weight-display" class="text-emerald-400 font-extrabold text-base">2.5 kg</span>
+                                </div>
+                                <input type="range" id="form-weight" min="0.5" max="50" step="0.5" value="2.5" class="w-full accent-emerald-500 cursor-pointer">
+                                <div class="flex justify-between text-xs text-slate-400 mt-1">
+                                    <span>0.5 kg (Small bag)</span>
+                                    <span>25 kg (Medium)</span>
+                                    <span>50 kg (Bulk)</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Item Description & Notes</label>
+                                <textarea id="form-desc" class="form-control" placeholder="E.g., 2 cardboard boxes, 1 broken microwave, 5 plastic bottles..."></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="form-group">
+                                    <label class="form-label">Preferred Pickup Date</label>
+                                    <input type="date" id="form-date" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Time Slot</label>
+                                    <div class="slot-grid">
+                                        <button type="button" class="slot-btn selected" data-slot="09:00 AM - 12:00 PM">Morning<br><span class="text-[10px]">9am - 12pm</span></button>
+                                        <button type="button" class="slot-btn" data-slot="12:00 PM - 03:00 PM">Afternoon<br><span class="text-[10px]">12pm - 3pm</span></button>
+                                        <button type="button" class="slot-btn" data-slot="03:00 PM - 06:00 PM">Evening<br><span class="text-[10px]">3pm - 6pm</span></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="form-label mb-0">3. Pickup Address & Pin Location</label>
+                                    <button type="button" onclick="locateUser()" class="text-xs text-emerald-400 hover:underline flex items-center gap-1 font-semibold">
+                                        <i class="fa-solid fa-crosshairs"></i> Use GPS Location
+                                    </button>
+                                </div>
+                                <input type="text" id="form-address" class="form-control mb-2" placeholder="Enter building, street, colony name..." value="Baner Road, Pune, Maharashtra 411045" required>
+                                <input type="text" id="form-landmark" class="form-control mb-2" placeholder="Landmark (Optional e.g. Near FIT Campus)">
+                                
+                                <div id="map-container"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Special Driver Instructions (Optional)</label>
+                                <input type="text" id="form-notes" class="form-control" placeholder="E.g., Call before arrival, leave at security gate">
+                            </div>
+
+                            <button type="submit" class="btn-primary w-full py-3.5 text-base justify-center mt-3">
+                                <i class="fa-solid fa-paper-plane"></i> Submit Pickup Request
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="space-y-6">
+                    <div class="glass-panel p-6 sticky top-20">
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-calculator text-emerald-400"></i> Eco-Impact Estimate
+                        </h3>
+
+                        <div class="space-y-3 mb-6">
+                            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-coins"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-slate-400 font-semibold">Reward Points</div>
+                                        <div class="text-xs font-bold text-white">Eco Points Earned</div>
+                                    </div>
+                                </div>
+                                <span id="calc-points" class="text-base font-extrabold text-amber-400">+38 pts</span>
+                            </div>
+
+                            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-smog"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-slate-400 font-semibold">Carbon Avoidance</div>
+                                        <div class="text-xs font-bold text-white">CO₂ Emission Saved</div>
+                                    </div>
+                                </div>
+                                <span id="calc-co2" class="text-base font-extrabold text-emerald-400">4.5 kg CO₂</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/20 text-xs text-slate-300 space-y-2">
+                            <p class="font-bold text-emerald-400 flex items-center gap-2">
+                                <i class="fa-solid fa-earth-americas"></i> Why Recycling Matters
+                            </p>
+                            <p>Recycling 1kg of plastic saves enough energy to power a smartphone for over 6 months!</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB: COLLECTOR PORTAL -->
+        <section id="collector-tab" class="tab-content hidden">
+            <div class="glass-panel p-6 mb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white"><i class="fa-solid fa-clipboard-list text-purple-400"></i> Collector Dispatch Portal</h2>
+                        <p class="text-xs text-slate-400">Manage assigned pickups and update status (`Accept`, `On The Way`, `Collected`, `Recycling Completed`)</p>
+                    </div>
+                    <span class="bg-purple-500/20 text-purple-300 text-xs font-bold px-3 py-1 rounded-full border border-purple-500/30">
+                        Collector Role Active
+                    </span>
+                </div>
+            </div>
+
+            <div id="collector-pickups-list">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <!-- TAB: DISPOSAL GUIDE -->
+        <section id="guide-tab" class="tab-content hidden">
+            <div class="glass-panel p-6 mb-6">
+                <h2 class="text-2xl font-bold text-white mb-1">Smart Waste Disposal & Segregation Guide</h2>
+                <p class="text-xs text-slate-400">Learn how to segregate household waste categories safely before scheduling pickup.</p>
+            </div>
+
+            <div id="guide-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Populated by app.js -->
+            </div>
+        </section>
+
+        <!-- TAB: REPORT PROBLEM -->
+        <section id="report-tab" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 glass-panel p-6">
+                    <h2 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Report Waste Problem</h2>
+                    <p class="text-xs text-slate-400 mb-4">Report illegal dumping, overflowing public bins, or missed pickups in your area.</p>
+
+                    <form id="report-problem-form" class="space-y-4">
+                        <div class="form-group">
+                            <label class="form-label">Problem Category</label>
+                            <select id="report-type" class="form-control" required>
+                                <option value="Illegal Dumping">Illegal Dumping</option>
+                                <option value="Overflowing Bins">Overflowing Bins</option>
+                                <option value="Missed Pickup">Missed Pickup</option>
+                                <option value="Hazardous Waste Hazard">Hazardous Waste Hazard</option>
+                                <option value="Other Waste Problem">Other Waste Problem</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Problem Location</label>
+                            <input type="text" id="report-location" class="form-control" placeholder="E.g., Baner Highway Underpass, Pune" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Problem Description</label>
+                            <textarea id="report-desc" class="form-control" placeholder="Provide details about the reported waste hazard..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary w-full py-3 justify-center">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Waste Report
+                        </button>
+                    </form>
+                </div>
+
+                <div class="glass-panel p-6">
+                    <h3 class="text-lg font-bold text-white mb-3">Reported Problems Log</h3>
+                    <div id="reports-list">
+                        <!-- Populated by app.js -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: ADMIN PORTAL -->
+        <section id="admin-tab" class="tab-content hidden">
+            <div class="glass-panel p-6 mb-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Admin Management & Analytics</h2>
+                        <p class="text-xs text-slate-400">Manage waste pickup requests, update status, assign collectors, and inspect city analytics</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <input type="text" id="admin-search" onkeyup="renderAdminTable()" placeholder="Search ID, Name, Address..." class="bg-slate-900 border border-slate-700 text-xs text-white rounded-lg px-3 py-2 outline-none">
+                        <select id="admin-filter-status" onchange="renderAdminTable()" class="bg-slate-900 border border-slate-700 text-xs text-white rounded-lg px-3 py-2 outline-none">
+                            <option value="all">All Statuses</option>
+                            <option value="submitted">Submitted</option>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="collectorassigned">Assigned</option>
+                            <option value="ontheway">On The Way</option>
+                            <option value="collected">Collected</option>
+                            <option value="recyclingcompleted">Recycled</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 mb-8">
+                <h3 class="text-lg font-bold text-white mb-4">Pickup Request Control Table</h3>
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>User</th>
+                                <th>Category & Weight</th>
+                                <th>Pickup Address</th>
+                                <th>Status</th>
+                                <th>Assigned Collector</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body">
+                            <!-- Populated by app.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass-panel p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">Waste Collection by Category</h3>
+                    <canvas id="chart-categories" class="max-h-[280px]"></canvas>
+                </div>
+                <div class="glass-panel p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">Monthly Recycling & CO₂ Trends</h3>
+                    <canvas id="chart-trends" class="max-h-[280px]"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- AUTH MODAL (Login / Register) -->
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-box text-left">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-800">
+                <h3 class="text-xl font-bold text-white"><i class="fa-solid fa-user-lock text-emerald-400"></i> Account Login</h3>
+                <button onclick="closeModal('auth-modal')" class="text-slate-400 hover:text-white text-lg">&times;</button>
+            </div>
+
+            <div class="mb-4 p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-xs">
+                <span class="text-slate-400 font-bold block mb-2">⚡ Quick Demo Login Credentials:</span>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" onclick="fillDemoLogin('user')" class="bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded hover:bg-emerald-500/30">User (Anushka)</button>
+                    <button type="button" onclick="fillDemoLogin('collector')" class="bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded hover:bg-purple-500/30">Collector (Ramesh)</button>
+                    <button type="button" onclick="fillDemoLogin('admin')" class="bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded hover:bg-amber-500/30">Admin (System)</button>
+                </div>
+            </div>
+
+            <form id="auth-login-form" class="space-y-3">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="user@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary w-full py-2.5 justify-center">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login to Account
+                </button>
+            </form>
+
+            <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-center text-slate-400">
+                Don't have an account? <a href="#" onclick="showModal('reg-modal'); closeModal('auth-modal');" class="text-emerald-400 font-bold hover:underline">Register New Account</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div id="reg-modal" class="modal-overlay">
+        <div class="modal-box text-left">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-800">
+                <h3 class="text-xl font-bold text-white"><i class="fa-solid fa-user-plus text-emerald-400"></i> Register Account</h3>
+                <button onclick="closeModal('reg-modal')" class="text-slate-400 hover:text-white text-lg">&times;</button>
+            </div>
+
+            <form id="auth-reg-form" class="space-y-3">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="reg-name" class="form-control" placeholder="Anushka Shinde" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="reg-email" class="form-control" placeholder="anushka@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" id="reg-phone" class="form-control" placeholder="+917045782996">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" id="reg-confirm-password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary w-full py-2.5 justify-center">
+                    <i class="fa-solid fa-user-check"></i> Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SMART ASSISTANT WIZARD MODAL -->
+    <div id="assistant-modal" class="modal-overlay">
+        <div class="modal-box text-left">
+            <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-robot text-emerald-400"></i> AI Smart Waste Assistant
+                </h3>
+                <button onclick="closeModal('assistant-modal')" class="text-slate-400 hover:text-white text-lg">&times;</button>
+            </div>
+
+            <p class="text-xs text-slate-400 mb-4">Type your waste item to receive instant category, safety instructions & collection advice.</p>
+
+            <div class="space-y-3">
+                <div class="form-group">
+                    <label class="form-label">What item do you want to dispose?</label>
+                    <input type="text" id="assist-item" class="form-control" placeholder="E.g., old phone battery, cardboard boxes, paint can..." value="old smartphone battery">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Item Condition</label>
+                    <select id="assist-condition" class="form-control">
+                        <option value="damaged">Damaged / Broken</option>
+                        <option value="intact">Intact / Clean</option>
+                        <option value="hazardous">Chemical Liquid / Leaking</option>
+                    </select>
+                </div>
+
+                <button type="button" onclick="runSmartAssistant()" class="btn-primary w-full py-2.5 justify-center">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Get Waste Advice
+                </button>
+            </div>
+
+            <div id="assist-results-box" class="mt-4 p-4 rounded-xl bg-slate-900/80 border border-emerald-500/30 text-xs space-y-2" style="display: none;">
+                <p class="font-bold text-emerald-400 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check"></i> Recommendation Result:
+                </p>
+                <p><strong>Category:</strong> <span id="assist-res-category" class="text-white font-bold"></span></p>
+                <p><strong>Disposal Method:</strong> <span id="assist-res-method" class="text-slate-300"></span></p>
+                <p><strong>Collection Type:</strong> <span id="assist-res-collection" class="text-slate-300"></span></p>
+                <p><strong>Safety Precautions:</strong> <span id="assist-res-safety" class="text-amber-400"></span></p>
+                <div class="pt-2 text-right">
+                    <button onclick="closeModal('assistant-modal')" class="btn-primary text-xs py-1.5 px-3">
+                        Auto-Fill in Request Form
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS RECEIPT MODAL -->
+    <div id="receipt-modal" class="modal-overlay">
+        <div class="modal-box text-center">
+            <div class="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mx-auto mb-3 border border-emerald-500/30">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-1">Pickup Request Confirmed!</h3>
+            <p class="text-xs text-slate-400 mb-4">Your request has been submitted with tracking ID.</p>
+
+            <div class="bg-slate-900/80 p-4 rounded-xl text-left space-y-2 text-xs border border-slate-800 mb-4">
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <span class="text-slate-400">Tracking ID:</span>
+                    <span id="receipt-id" class="font-mono text-emerald-400 font-bold">SW-2026-00005</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Category:</span>
+                    <span id="receipt-category" class="font-semibold text-white">E-Waste</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Weight:</span>
+                    <span id="receipt-weight" class="font-semibold text-white">2.5 kg</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Schedule:</span>
+                    <span id="receipt-date" class="font-semibold text-white">2026-09-28</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Address:</span>
+                    <span id="receipt-address" class="font-semibold text-white truncate max-w-[200px]">Baner Road, Pune</span>
+                </div>
+                <div class="pt-2 border-t border-slate-800 flex justify-between text-emerald-400 font-bold">
+                    <span id="receipt-points">+38 Eco Points</span>
+                    <span id="receipt-co2">4.5 kg CO₂ Saved</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeModal('receipt-modal'); document.querySelector('[data-tab=\'my-requests-tab\']').click()" class="btn-outline flex-1 justify-center text-xs">
+                    <i class="fa-solid fa-location-dot"></i> View My Requests
+                </button>
+                <button onclick="closeModal('receipt-modal')" class="btn-primary flex-1 justify-center text-xs">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="container mt-12 mb-6 text-center text-xs text-slate-400">
+        <div class="glass-panel p-5">
+            <p class="font-bold text-slate-300">Smart Waste Collection & Recycling Platform | FIT-FEST 2026 HACKATHON</p>
+            <p class="mt-1">Developed by Anushka Shinde | Flora Institute of Technology & GDG FIT Pune</p>
+        </div>
+    </footer>
+
+    <!-- Main JavaScript Controller -->
+    <script src="/static/js/app.js"></script>
+
+</body>
+</html>
